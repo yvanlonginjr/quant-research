@@ -1,0 +1,20 @@
+{
+  "name": "frank369-bot",
+  "version": "1.0.0",
+  "description": "Frank369/Zeussy 369 model — NQ futures signal bot (v1.0 console signals only)",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "backtest": "node src/backtest.js",
+    "health": "node -e \"import('./src/mcp-client.js').then(({createMcpClient})=>createMcpClient()).then(async c=>{const r=await c.healthCheck();console.log(JSON.stringify(r,null,2));await c.disconnect();process.exit(0)}).catch(e=>{console.error(e.message);process.exit(1)})\""
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "chalk": "^5.3.0",
+    "exceljs": "^4.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

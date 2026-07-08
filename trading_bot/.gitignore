@@ -1,0 +1,5 @@
+node_modules/
+data/trades.json
+data/backtest_*/screenshots/
+data/backtest_2026*/
+.DS_Store
