@@ -88,10 +88,9 @@ export class SignalEngine {
       logger.kill(`Daily loss limit reached (${this.sessionPnL.toFixed(2)} pts). No more signals today.`);
       return false;
     }
-    if (this.tradesThisSession >= config.risk.maxTradesPerSession) {
-      logger.kill(`Max trades per session reached (${this.tradesThisSession}/${config.risk.maxTradesPerSession})`);
-      return false;
-    }
+    // Max-trades-per-session cap removed for the data-collection phase —
+    // see CHANGES.md. config.risk.maxTradesPerSession is unused until this
+    // gate is restored.
     return true;
   }
 

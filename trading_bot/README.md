@@ -55,7 +55,7 @@ These are the only minutes of the day the bot can fire a signal. Outside these w
 Once inside a killzone, the bot checks its session-level risk state:
 
 - **Daily loss kill switch:** If cumulative paper P&L for the current ET calendar day has hit or gone below −50 NQ points (equivalent to −$1,000 per contract at $20/pt), all signals are blocked for the rest of that day. Counter resets at the start of the next ET session date.
-- **Max trades per session:** If the bot has already fired 3 signals today (across AM and PM combined), no further signals are generated. This prevents overtrading on choppy days regardless of how many valid setups appear.
+- **Max trades per session:** ⚠️ Removed 2026-08-12 (data-collection phase) — this no longer blocks signals; the description below reflects normal/reactivated behavior. See [CHANGES.md](CHANGES.md). If the bot has already fired 3 signals today (across AM and PM combined), no further signals are generated. This prevents overtrading on choppy days regardless of how many valid setups appear.
 
 Both counters are reset automatically when the ET date changes (detected at the start of each evaluation cycle).
 
@@ -348,7 +348,7 @@ All tunable parameters are in `config.js`:
 | `risk.target1RR` | 2.0 | Primary target multiplier |
 | `risk.target2RR` | 3.0 | Extension target multiplier |
 | `risk.dailyLossLimitPoints` | -50 | Kill-switch threshold (−$1,000/contract) |
-| `risk.maxTradesPerSession` | 3 | Max signals per trading day |
+| `risk.maxTradesPerSession` | 3 | Max signals per trading day — ⚠️ gate currently removed, value unused, see [CHANGES.md](CHANGES.md) |
 | `smt.enabled` | true | Toggle SMT reference data collection |
 | `smt.requireBoth` | false | Both ES AND YM must diverge (stricter mode) |
 | `pollIntervalMs` | 5000 | Main loop poll cadence (ms) |

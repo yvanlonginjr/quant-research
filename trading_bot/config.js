@@ -219,6 +219,10 @@ export const config = {
 
     // Maximum signals fired per session day (AM + PM combined).
     // Prevents overtrading on choppy/whipsaw days.
+    // NOTE: the gate that enforces this was removed from signal-engine.js on
+    // 2026-08-12 for the data-collection phase — see CHANGES.md. This value
+    // is currently unused; restoring the gate in _riskGateOpen() will honor
+    // it again.
     maxTradesPerSession: 3,
   },
 
