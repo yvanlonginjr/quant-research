@@ -11,7 +11,7 @@ v1.0 outputs signals to the **console only** — no order execution.
 | # | Pillar | Description |
 |---|--------|-------------|
 | 1 | **90-Min Cycle Engine** | Day divided into 90-min blocks from 2:30 AM ET. Prev-cycle H/L = key liquidity levels |
-| 2 | **Killzone Filter** | Signals only fire during NY AM (9:30–11:00) and NY PM (1:30–3:00) ET |
+| 2 | **Killzone Filter** | ⚠️ Currently disabled (data-collection phase) — see [CHANGES.md](CHANGES.md). Normally: signals only fire during NY AM (9:30–11:00) and NY PM (1:30–3:00) ET |
 | 3 | **Liquidity Sweep** | Price takes out prev-cycle H or L by configurable threshold, then closes back inside |
 | 4 | **MSS Confirmation** | Strong momentum candle (≥50% body) in reversal direction after sweep |
 | 5 | **FVG Entry** | 3-candle imbalance formed during expansion; entry triggers on retrace into gap |
@@ -40,6 +40,8 @@ The signal pipeline in the main loop is fully synchronous and top-down. If any l
 These two checks run before any price data is touched. If either fails, the bot returns immediately and logs a debug message.
 
 #### 1. Killzone gate
+
+> ⚠️ **Disabled 2026-08-12** (data-collection phase) — this gate no longer blocks signals; the description below reflects normal/reactivated behavior. See [CHANGES.md](CHANGES.md).
 
 The very first thing evaluated on every tick. The bot checks whether the current ET clock time falls inside one of two hard trading windows:
 
@@ -252,7 +254,7 @@ No orders are placed in v1.0. The signal is informational only.
 ```
 Every 5 seconds:
 │
-├─ In killzone? (NY AM 9:30–11 or NY PM 1:30–3 ET)
+├─ In killzone? ⚠️ DISABLED, always passes — see CHANGES.md (NY AM 9:30–11 or NY PM 1:30–3 ET)
 │   └─ No → exit, wait
 │
 ├─ Risk gate clear? (daily loss < 50pts AND trades < 3)

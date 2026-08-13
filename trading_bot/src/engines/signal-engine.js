@@ -132,12 +132,16 @@ export class SignalEngine {
     const htfScore = htfContextScore(); // stub — returns { bias: 'neutral', score: 50 }
     // END PHASE 2 HOOK ──────────────────────────────────────
 
-    // ── Step 1: Killzone gate ─────────────────────────────────
+    // ── Step 1: Killzone gate — REMOVED for data-collection phase ────
+    // Was: `if (!kzStatus.active) return null;`, restricting signals to
+    // NY AM / NY PM. Removed 2026-08-12 to measure signal frequency across
+    // the full day. See CHANGES.md for how to restore it.
+    //
+    // NOTE (found while removing this): config.killzones was never defined
+    // in config.js, so getKillzoneStatus() always returned active:false —
+    // this gate had already degenerated into a permanent block, not just a
+    // NY-AM/PM restriction. Details in CHANGES.md.
     const kzStatus = getKillzoneStatus(nowMs);
-    if (!kzStatus.active) {
-      logger.debug(`Not in killzone. Next opens in ~${kzStatus.minutesUntilNext ?? '?'} min`);
-      return null;
-    }
 
     // ── Step 2: Risk gate ─────────────────────────────────────
     const cycleInfo = getCycleInfo(nowMs);
@@ -235,7 +239,7 @@ export class SignalEngine {
       rr,
       riskPoints: riskPts,
       confluence: {
-        killzone:      kzStatus.name,
+        killzone:      kzStatus.name ?? 'unrestricted', // gate removed — see CHANGES.md
         cycleIndex:    cycleInfo.cycleIndex,
         cycleStart:    cycleStartLabel(cycleInfo.cycleIndex),
         prevCycleHigh: prevHL.high,
