@@ -217,6 +217,11 @@ export const config = {
     // At $20/pt per 1 NQ contract: -50 pts = -$1,000
     dailyLossLimitPoints: -50,
 
+    // Master toggle for the daily loss kill switch above.
+    // DISABLED 2026-08-12 for the signal-frequency data-collection phase —
+    // see CHANGES.md. Flip to true to reactivate; no other code changes needed.
+    dailyLossKillSwitchEnabled: false,
+
     // Maximum signals fired per session day (AM + PM combined).
     // Prevents overtrading on choppy/whipsaw days.
     // NOTE: the gate that enforces this was removed from signal-engine.js on

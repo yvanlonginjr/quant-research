@@ -4,6 +4,11 @@ Rule-based NQ futures signal bot implementing Frank369/Zeussy's **369 trading mo
 
 v1.0 outputs signals to the **console only** — no order execution.
 
+> ⚠️ **Currently in a data-collection phase**: the killzone filter, daily
+> loss kill-switch, and max-trades-per-session cap are disabled/removed so
+> we can measure raw signal frequency. See [CHANGES.md](CHANGES.md) for
+> exactly what changed and how to reactivate each one.
+
 ---
 
 ## Model Pillars
@@ -16,7 +21,7 @@ v1.0 outputs signals to the **console only** — no order execution.
 | 4 | **MSS Confirmation** | Strong momentum candle (≥50% body) in reversal direction after sweep |
 | 5 | **FVG Entry** | 3-candle imbalance formed during expansion; entry triggers on retrace into gap |
 | 6 | **SMT Divergence** | NQ makes new cycle extreme but ES/YM fail to confirm (intermarket confluence) |
-| 7 | **Risk Management** | Daily loss kill-switch + max-trades-per-session cap |
+| 7 | **Risk Management** | Daily loss kill-switch (⚠️ currently disabled) + max-trades-per-session cap (⚠️ currently removed) — see [CHANGES.md](CHANGES.md) |
 
 ---
 
@@ -54,7 +59,7 @@ These are the only minutes of the day the bot can fire a signal. Outside these w
 
 Once inside a killzone, the bot checks its session-level risk state:
 
-- **Daily loss kill switch:** If cumulative paper P&L for the current ET calendar day has hit or gone below −50 NQ points (equivalent to −$1,000 per contract at $20/pt), all signals are blocked for the rest of that day. Counter resets at the start of the next ET session date.
+- **Daily loss kill switch:** ⚠️ Disabled 2026-08-12 (data-collection phase) — hidden behind a config flag, not deleted; this no longer blocks signals; the description below reflects normal/reactivated behavior. See [CHANGES.md](CHANGES.md). If cumulative paper P&L for the current ET calendar day has hit or gone below −50 NQ points (equivalent to −$1,000 per contract at $20/pt), all signals are blocked for the rest of that day. Counter resets at the start of the next ET session date.
 - **Max trades per session:** ⚠️ Removed 2026-08-12 (data-collection phase) — this no longer blocks signals; the description below reflects normal/reactivated behavior. See [CHANGES.md](CHANGES.md). If the bot has already fired 3 signals today (across AM and PM combined), no further signals are generated. This prevents overtrading on choppy days regardless of how many valid setups appear.
 
 Both counters are reset automatically when the ET date changes (detected at the start of each evaluation cycle).
@@ -257,7 +262,7 @@ Every 5 seconds:
 ├─ In killzone? ⚠️ DISABLED, always passes — see CHANGES.md (NY AM 9:30–11 or NY PM 1:30–3 ET)
 │   └─ No → exit, wait
 │
-├─ Risk gate clear? (daily loss < 50pts AND trades < 3)
+├─ Risk gate clear? ⚠️ daily-loss disabled, max-trades removed — always passes — see CHANGES.md (daily loss < 50pts AND trades < 3)
 │   └─ No → exit, wait until tomorrow
 │
 ├─ Cycle identified + prev-cycle H/L available?
@@ -348,6 +353,7 @@ All tunable parameters are in `config.js`:
 | `risk.target1RR` | 2.0 | Primary target multiplier |
 | `risk.target2RR` | 3.0 | Extension target multiplier |
 | `risk.dailyLossLimitPoints` | -50 | Kill-switch threshold (−$1,000/contract) |
+| `risk.dailyLossKillSwitchEnabled` | ⚠️ `false` | Master toggle for the kill-switch above — currently off, see [CHANGES.md](CHANGES.md) |
 | `risk.maxTradesPerSession` | 3 | Max signals per trading day — ⚠️ gate currently removed, value unused, see [CHANGES.md](CHANGES.md) |
 | `smt.enabled` | true | Toggle SMT reference data collection |
 | `smt.requireBoth` | false | Both ES AND YM must diverge (stricter mode) |

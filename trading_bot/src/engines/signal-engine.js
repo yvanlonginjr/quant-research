@@ -84,7 +84,9 @@ export class SignalEngine {
   // ── Risk gate ─────────────────────────────────────────────
 
   _riskGateOpen() {
-    if (this.sessionPnL <= config.risk.dailyLossLimitPoints) {
+    // Daily loss kill switch — hidden behind a config flag (not deleted) so
+    // it can be reactivated in later stages. See CHANGES.md.
+    if (config.risk.dailyLossKillSwitchEnabled && this.sessionPnL <= config.risk.dailyLossLimitPoints) {
       logger.kill(`Daily loss limit reached (${this.sessionPnL.toFixed(2)} pts). No more signals today.`);
       return false;
     }
