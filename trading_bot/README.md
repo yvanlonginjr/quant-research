@@ -367,6 +367,7 @@ All tunable parameters are in `config.js`:
 ```
 index.js          — boot, main loop, SMT loop
 config.js         — all tunable parameters
+CHANGES.md        — log of experimental changes (what/why/how to revert)
 src/
   mcp-client.js   — TradingView MCP wrapper (stdio)
   candle-buffer.js— OHLCV accumulator + query helpers
